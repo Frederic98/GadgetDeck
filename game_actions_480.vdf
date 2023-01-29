@@ -1,0 +1,63 @@
+"In Game Actions"
+{
+	"actions"
+	{
+		"InGameControls"
+		{
+			"title"					"#Set_Ingame"
+			"StickPadGyro"
+			{
+				"JoyLeft"
+				{
+					"title"			"#Action_JoyLeft"
+					"input_mode"	"joystick_move"
+				}
+				"JoyRight"
+				{
+					"title"			"#Action_JoyRight"
+					"input_mode"	"joystick_move"
+				}
+			}
+			"AnalogTrigger"
+			{
+				"TrigLeft"			"#Action_TrigLeft"
+				"TrigRight"			"#Action_TrigRight"
+			}
+			"Button"
+			{
+				"X"				"#Action_X"
+				"Y"				"#Action_Y"
+				"A"             "#Action_A"
+				"B"             "#Action_B"
+				"BumpLeft"      "#Action_BumpLeft"
+				"BumpRight"     "#Action_BumpRight"
+				"Menu"          "#Action_Menu"
+				"Start"         "#Action_Start"
+				"JoyPressLeft"  "#Action_JoyPressLeft"
+				"JoyPressRight" "#Action_JoyPressRight"
+			}
+		}
+	}
+	"localization"
+	{
+		"english"
+		{
+			"Set_Ingame"			"In-Game Controls"
+			"Set_Menu"				"Menu Controls"
+			"Action_JoyLeft"		"Joystick Left"
+			"Action_JoyRight"		"Joystick Right"
+			"Action_TrigLeft"		"Trigger Left"
+			"Action_TrigRight"		"Trigger Right"
+			"Action_BumpLeft"       "Bumper Left"
+			"Action_BumpRight"      "Bumper Right"
+			"Action_JoyPressLeft"   "Joystick Press Left"
+			"Action_JoyPressRight"  "Joystick Press Right"
+			"Action_X"			    "Button X"
+			"Action_Y"			    "Button Y"
+			"Action_A"			    "Button A"
+			"Action_B"			    "Button B"
+			"Action_Menu"           "Button Menu"
+			"Action_Start"          "Button Start"
+		}
+	}
+}

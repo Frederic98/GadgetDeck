@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Add SteamworksPy to $PATH
+export PATH=/home/deck/SteamworksPy:$PATH
+# Activate venv
+source venv/bin/activate
+# Force steam to lock input onto our app
+steam steam://forceinputappid/480
+# Run main.py
+PYTHONPATH=/home/deck/SteamworksPy python3 main.py
+# Release steam input lock
+steam steam://forceinputappid/0
+# Deactivate venv
+deactivate
