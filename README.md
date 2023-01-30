@@ -31,7 +31,7 @@ Then `Exit`>`Exit Saving Changes`.
 - `chmod +x run_ui`
 - `cp game_actions_480.vdf /home/deck/.steam/steam/controller_config/`
 - `python -m venv venv`
-- `source venv/bin/activate
+- `source venv/bin/activate`
 - `pip install PyQt5 hid-parser`
 
 ### 3. Enable USB Gadget
