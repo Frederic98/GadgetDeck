@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+if [ "$EUID" -eq 0 ]; then
+  echo "Please don't run as root"
+  exit 1
+fi
+
+echo "Creating python venv"
+python -m venv venv
+source venv/bin/activate
+
+echo "Installing python libs"
+pip install PyQt5 hid-parser
+wget https://github.com/Frederic98/SteamworksPy/releases/download/SteamInput/steamworks.zip
+unzip steamworks.zip -d venv/lib/python*/site-packages
+
+echo "Copying controller config"
+mkdir -p ~/.steam/steam/controller_config
+cp game_actions_480.vdf ~/.steam/steam/controller_config/
+
+echo "Done"
+deactivate
