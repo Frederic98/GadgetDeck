@@ -26,7 +26,10 @@ chmod +x setup
 ./setup
 ```
 
-#### 2.1: [For contributors] Running from source
+<details>
+  <summary>[For contributors]</summary>
+
+#### 2.1: Running from source
 To compile the Steamworks python bindings:
 - Download Steamworks SDK: https://partner.steamgames.com/dashboard
 - Clone SteamworksPy: https://github.com/philippj/SteamworksPy in `/home/deck` (Or, while it's not merged yet, Frederic98/SteamworksPy)
@@ -34,6 +37,7 @@ To compile the Steamworks python bindings:
 - Copy Steamworks `redistibutable_bin/linux64/libsteam_api.so` into SteamworksPy `library/`
 - In `SteamworksPy/library`: `make`
 - Copy `SteamworksPy.so` and `libsteam_api.so` to `SteamworksPy/steamworks`
+</details>
 
 ### 3. Enable USB Gadget
 In a terminal from the SteamDeckGadget directory:
