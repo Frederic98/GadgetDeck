@@ -12,6 +12,7 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
+modprobe libcomposite
 LIBCOMPOSITE_DIR="/sys/kernel/config/usb_gadget"
 if [ ! -d "$LIBCOMPOSITE_DIR" ]; then
   echo "Gadget folder not found. Is libcomposite loaded?"

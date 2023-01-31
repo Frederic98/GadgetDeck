@@ -1,0 +1,13 @@
+# /etc/systemd/system/steam-gadget.service
+[Unit]
+Description=Steam Deck Gadget
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/home/deck/SteamDeckGadget
+ExecStart=/home/deck/SteamDeckGadget/steam-gadget load
+ExecStop=/home/deck/SteamDeckGadget/steam-gadget unload steam_deck_gadget
+
+[Install]
+WantedBy=multi-user.target
