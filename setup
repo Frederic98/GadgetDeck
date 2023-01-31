@@ -18,5 +18,22 @@ echo "Copying controller config"
 mkdir -p ~/.steam/steam/controller_config
 cp game_actions_480.vdf ~/.steam/steam/controller_config/
 
+echo "Adding autocomplete to .bashrc"
+bashrc_flag="# *** SteamDeckGadget"
+case `grep -Fx "$bashrc_flag" ~/.bashrc >/dev/null; echo $?` in
+  0)
+    # Already wrote to .bashrc before, do nothing
+    ;;
+  1)
+    # First time running - add autocomplete script to .bashrc
+    echo "" >> ~/.bashrc
+    echo "$bashrc_flag" >> ~/.bashrc
+    echo "source ~/SteamDeckGadget/steam-gadget-autocomplete" >> ~/.bashrc
+    ;;
+  *)
+    # Some error - fail quietly
+    ;;
+esac
+
 echo "Done"
 deactivate

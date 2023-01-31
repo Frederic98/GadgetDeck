@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
 
 _gadget_completer() {
-  if [ "${#COMP_WORDS[@]}" == "2" ]; then
-    # autocomplete the action
-    COMPREPLY=($(compgen -W "load unload" "${COMP_WORDS[1]}"))
-  elif [ "${#COMP_WORDS[@]}" == "3" ]; then
-    # Check the value of the action argument
-    if [ "${COMP_WORDS[1]}" == "unload" ]; then
-      # Autocomplete by listing what's in the usb gadget folder
-      COMPREPLY=($(compgen -W "`ls /sys/kernel/config/usb_gadget`" "${COMP_WORDS[2]}"))
+  # Firstly, check if binary is found, don't autocomplete when not in SteamDeckGadget directory
+  if type "${COMP_WORDS[0]}" > /dev/null 2>&1; then
+    if [ "${#COMP_WORDS[@]}" == "2" ]; then
+      # autocomplete the action
+      COMPREPLY=($(compgen -W "load unload" "${COMP_WORDS[1]}"))
+    elif [ "${#COMP_WORDS[@]}" == "3" ]; then
+      # Check the value of the action argument
+      if [ "${COMP_WORDS[1]}" == "unload" ]; then
+        # Autocomplete by listing what's in the usb gadget folder
+        COMPREPLY=($(compgen -W "`ls /sys/kernel/config/usb_gadget`" "${COMP_WORDS[2]}"))
+      fi
     fi
   fi
 }
