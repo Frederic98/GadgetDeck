@@ -17,28 +17,29 @@ Navigate to `Advanced`>`USB Configuration`>`USB Dual Role Device` and change fro
 Then `Exit`>`Exit Saving Changes`.
 
 ### 2. Download SteamDeckGadget
+Clone this repository into /home/deck and run the setup script
+```shell
+cd ~/
+git clone https://github.com/Frederic98/SteamDeckGadget.git
+cd SteamDeckGadget
+chmod +x setup
+./setup
+```
 
-#### 2.1: Running from source
+#### 2.1: [For contributors] Running from source
+To compile the Steamworks python bindings:
 - Download Steamworks SDK: https://partner.steamgames.com/dashboard
 - Clone SteamworksPy: https://github.com/philippj/SteamworksPy in `/home/deck` (Or, while it's not merged yet, Frederic98/SteamworksPy)
 - Copy Steamworks `sdk/public/steam` into SteamworksPy `library/sdk/steam`
 - Copy Steamworks `redistibutable_bin/linux64/libsteam_api.so` into SteamworksPy `library/`
-- in `SteamworksPy/library`: `make`
+- In `SteamworksPy/library`: `make`
 - Copy `SteamworksPy.so` and `libsteam_api.so` to `SteamworksPy/steamworks`
-
-
-- Clone this repository in `/home/deck`
-- `chmod +x run_ui`
-- `cp game_actions_480.vdf /home/deck/.steam/steam/controller_config/`
-- `python -m venv venv`
-- `source venv/bin/activate`
-- `pip install PyQt5 hid-parser`
 
 ### 3. Enable USB Gadget
 In a terminal from the SteamDeckGadget directory:
 ```shell
 sudo modprobe libcomposite
-sudo steam-gadget load
+sudo ./steam-gadget load
 ```
 
 When the Steam Deck is connected to your computer over USB, it should now show up in `Control Panel` under `Devices and Printers`
