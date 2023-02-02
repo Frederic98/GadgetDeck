@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import argparse
+import glob
 import subprocess
 import os
 
@@ -70,7 +71,7 @@ def function_enable(function: str):
     if function in ('joystick', 'mouse', 'keyboard'):
         function = create_function_hid(function, f'HID Descriptors/{function}.txt')
         gadget.activate()
-        subprocess.call(['chmod', '0666', function.device])
+        chmod_hidg()
 
 def function_disable(function: str):
     gadget.deactivate()
@@ -79,7 +80,11 @@ def function_disable(function: str):
     linked_functions = [f for f in os.scandir(gadget['configs']['c.1'].path) if f.is_symlink()]
     if linked_functions:
         gadget.activate()
+        chmod_hidg()
 
+def chmod_hidg():
+    for dev in glob.glob('/dev/hidg*'):
+        subprocess.call(['chmod', '0666', dev])
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('steam-gadget')

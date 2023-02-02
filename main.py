@@ -17,7 +17,7 @@ class JoystickEmulator:
     DIGITAL_ACTIONS = ('A', 'B', 'X', 'Y', 'UP', 'DOWN', 'LEFT', 'RIGHT', 'BumpLeft', 'BumpRight', 'Menu', 'Start', 'JoyPressLeft', 'JoyPressRight')
 
     def __init__(self, hid_js, hid_mouse):
-        self.js_gadget = JoystickGadget(hid_js, 2, 1, 16)
+        self.js_gadget = JoystickGadget(hid_js, 2, 2, 16)
         self.mouse_gadget = MouseGadget(hid_mouse, 2, 8, 2)
         self.window = joystick_ui.JoystickUI()
         self.steam = STEAMWORKS()
@@ -47,7 +47,8 @@ class JoystickEmulator:
                 self.window.update_information(data)
                 self.js_gadget.set_joystick(0, analog_data['JoyLeft'].x, -1 * analog_data['JoyLeft'].y)
                 self.js_gadget.set_joystick(1, analog_data['JoyRight'].x, -1 * analog_data['JoyRight'].y)
-                self.js_gadget.set_trigger(0, analog_data['TrigLeft'].x - analog_data['TrigRight'].x)
+                self.js_gadget.set_trigger(0, analog_data['TrigLeft'].x)
+                self.js_gadget.set_trigger(1, analog_data['TrigRight'].x)
                 for i, btn in enumerate(self.DIGITAL_ACTIONS):
                     self.js_gadget.set_button(i, digital_data[btn])
                 self.js_gadget.update()

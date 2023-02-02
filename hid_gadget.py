@@ -56,7 +56,7 @@ class JoystickGadget(HIDGadget):
             self.update()
 
     def set_trigger(self, i: int, v: float):
-        self.triggers[i] = int(self.remap(v, -1, 1, -127, 127))
+        self.triggers[i] = int(self.remap(v, 0, 1, 0, 127))
         if self.auto_update:
             self.update()
 
