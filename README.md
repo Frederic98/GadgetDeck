@@ -52,6 +52,8 @@ When the Steam Deck is connected to your computer over USB, it should now show u
 In Desktop Mode, add the `run_ui` file to Steam through `Games`>`Add a Non-Steam Game to My Library...`.
 Then, launch the program from the Steam Client
 
+Open the Spacewar game page in your library, and open `settings`->`manage`->`controller layout`->`edit layout` and assign all the buttons and joysticks to the corresponding game actions.
+
 On your computer, search `game controllers` and open `Set up USB game controllers`. Move the Steam Deck joysticks, and this should be reflected on your computer.
 
 In Steam on your computer, go to `settings`->`Controller`->`General controller settings` and enable `Generic gamepad configuration support`.  
