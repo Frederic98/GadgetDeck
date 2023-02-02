@@ -1,13 +1,13 @@
-# /etc/systemd/system/steam-gadget.service
+# /etc/systemd/system/steam-gadget-base.service
 [Unit]
-Description=Steam Deck Gadget
+Description=Steam Deck Gadget base
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
 WorkingDirectory=/home/deck/SteamDeckGadget
 ExecStart=/home/deck/SteamDeckGadget/steam-gadget.py setup
-ExecStop=/home/deck/SteamDeckGadget/steam-gadget.py destroy steam_deck_gadget
+ExecStop=/home/deck/SteamDeckGadget/steam-gadget.py destroy
 
 [Install]
 WantedBy=multi-user.target
