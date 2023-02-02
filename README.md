@@ -54,18 +54,16 @@ Then, launch the program from the Steam Client
 
 On your computer, search `game controllers` and open `Set up USB game controllers`. Move the Steam Deck joysticks, and this should be reflected on your computer.
 
+In Steam on your computer, go to `settings`->`Controller`->`General controller settings` and enable `Generic gamepad configuration support`.  
+Then, click the steam deck and map all the buttons to a controller layout.
+
 ### 5. Disable SteamDeckGadget
 It should not be necessary to disable the gadget, you can just unplug the Steam Deck from the computer. But if you want:  
 `sudo ./steam-gadget unload steam_deck_gadget`
 
 ## Planned improvements
 - Systemd service to enable USB Gadget on boot
-- Add mouse gadget and feed Steam Deck touchpad data into this
+- On-screen keyboard with keyboard HID gadget
 - Ethernet gadget for local multiplayer by connecting two Steam Decks to each other (Might need to disable charging on both to prevent one from draining the other)
 - MTP gadget to browse Steam Deck files from computer
 - UVC gadget for streaming game to computer without the use of an HDMI capture card
-
-## Limitations
-For now, this does not work with all games. This emulates a game controller using the USB HID protocol. However, not all games support this (not even the Steam client).  
-One solution is to emulate an XInput controller, but this does not use the HID protocol, and would require implementing a special FunctionFS driver.  
-Another possibility is emulating a Steam Controller. As far as I know, this implements the HID protocol, but I'd need one to be able to inspect it's protocol.
