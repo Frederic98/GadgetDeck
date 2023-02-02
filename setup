@@ -28,7 +28,7 @@ case `grep -Fx "$bashrc_flag" ~/.bashrc >/dev/null; echo $?` in
     # First time running - add autocomplete script to .bashrc
     echo "" >> ~/.bashrc
     echo "$bashrc_flag" >> ~/.bashrc
-    echo "source ~/SteamDeckGadget/steam-gadget-autocomplete" >> ~/.bashrc
+    echo "source ~/SteamDeckGadget/util/steam-gadget-autocomplete" >> ~/.bashrc
     ;;
   *)
     # Some error - fail quietly
