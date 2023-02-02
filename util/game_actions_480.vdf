@@ -17,6 +17,11 @@
 					"title"			"#Action_JoyRight"
 					"input_mode"	"joystick_move"
 				}
+				"Mouse"
+				{
+					"title"			"#Action_Mouse"
+					"input_mode"	"absolute_mouse"
+				}
 			}
 			"AnalogTrigger"
 			{
@@ -50,6 +55,7 @@
 			"Set_Menu"				"Menu Controls"
 			"Action_JoyLeft"		"Joystick Left"
 			"Action_JoyRight"		"Joystick Right"
+			"Action_Mouse"          "Mouse"
 			"Action_TrigLeft"		"Trigger Left"
 			"Action_TrigRight"		"Trigger Right"
 			"Action_BumpLeft"       "Bumper Left"

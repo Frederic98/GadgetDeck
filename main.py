@@ -8,16 +8,17 @@ import time
 from PyQt5.QtWidgets import QApplication
 import joystick_ui
 from steamworks import STEAMWORKS
-from hid_gadget import JoystickGadget
+from hid_gadget import JoystickGadget, MouseGadget
 
 
 class JoystickEmulator:
     ACTION_SETS = ('InGameControls',)
-    ANALOG_ACTIONS = ('JoyLeft', 'JoyRight', 'TrigLeft', 'TrigRight')
+    ANALOG_ACTIONS = ('JoyLeft', 'JoyRight', 'TrigLeft', 'TrigRight', 'Mouse')
     DIGITAL_ACTIONS = ('A', 'B', 'X', 'Y', 'UP', 'DOWN', 'LEFT', 'RIGHT', 'BumpLeft', 'BumpRight', 'Menu', 'Start', 'JoyPressLeft', 'JoyPressRight')
 
-    def __init__(self, hid_device):
-        self.gadget = JoystickGadget(hid_device)
+    def __init__(self, hid_js, hid_mouse):
+        self.js_gadget = JoystickGadget(hid_js, 2, 1, 16)
+        self.mouse_gadget = MouseGadget(hid_mouse, 2, 8, 2)
         self.window = joystick_ui.JoystickUI()
         self.steam = STEAMWORKS()
         self.steam.initialize()
@@ -44,12 +45,14 @@ class JoystickEmulator:
                 digital_data = {action: self.steam.Input.GetDigitalActionData(controller, handle).bState for action, handle in self.digital_actions.items()}
                 data = {'analog_data': analog_data, 'digital_action': digital_data}
                 self.window.update_information(data)
-                self.gadget.set_joystick(0, analog_data['JoyLeft'].x, -1 * analog_data['JoyLeft'].y)
-                self.gadget.set_joystick(1, analog_data['JoyRight'].x, -1 * analog_data['JoyRight'].y)
-                self.gadget.set_trigger(0, analog_data['TrigLeft'].x - analog_data['TrigRight'].x)
+                self.js_gadget.set_joystick(0, analog_data['JoyLeft'].x, -1 * analog_data['JoyLeft'].y)
+                self.js_gadget.set_joystick(1, analog_data['JoyRight'].x, -1 * analog_data['JoyRight'].y)
+                self.js_gadget.set_trigger(0, analog_data['TrigLeft'].x - analog_data['TrigRight'].x)
                 for i, btn in enumerate(self.DIGITAL_ACTIONS):
-                    self.gadget.set_button(i, digital_data[btn])
-                self.gadget.update()
+                    self.js_gadget.set_button(i, digital_data[btn])
+                self.js_gadget.update()
+                self.mouse_gadget.move(analog_data['Mouse'].x, analog_data['Mouse'].y)
+                self.mouse_gadget.update()
             else:
                 self.controllers = self.steam.Input.GetConnectedControllers()
                 for controller in self.controllers:
@@ -59,7 +62,7 @@ class JoystickEmulator:
 
 if __name__ == '__main__':
     app = QApplication([])
-    emulator = JoystickEmulator('/dev/hidg0')
+    emulator = JoystickEmulator('/dev/hidg0', '/dev/hidg1')
     emulator.window.show()
     app.exec()
 

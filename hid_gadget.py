@@ -88,6 +88,47 @@ class JoystickGadget(HIDGadget):
         return f'<{self.__class__.__qualname__} {js} - {trig} - {btn}>'
 
 
+class MouseGadget(HIDGadget):
+    def __init__(self, device, resolution=1, buttons=2, wheels=1, auto_update=False):
+        HIDGadget.__init__(self, device, auto_update)
+        self.xy_resolution = resolution
+        btn_bytes = math.ceil(buttons / 8)
+
+        self.x = 0
+        self.y = 0
+        self.buttons = [0 for _ in range(btn_bytes)]
+        self.wheels = [0 for _ in range(wheels)]
+
+    def to_bytes(self) -> bytes:
+        buttons = b''.join(b.to_bytes(1, 'little') for b in self.buttons)
+        x = self.x.to_bytes(self.xy_resolution, 'little', signed=True)
+        y = self.y.to_bytes(self.xy_resolution, 'little', signed=True)
+        wheels = b''.join(b.to_bytes(1, 'little') for b in self.wheels)
+        return buttons + x + y + wheels
+
+    def update(self):
+        HIDGadget.update(self)
+        self.x = 0
+        self.y = 0
+        for i,wheel in enumerate(self.wheels):
+            self.wheels[i] = 0
+
+    def reset(self):
+        self.x = 0
+        self.y = 0
+        for i, btn in enumerate(self.buttons):
+            self.buttons[i] = 0
+        for i, wheel in enumerate(self.wheels):
+            self.wheels[i] = 0
+
+    def move(self, x, y):
+        self.x = int(x)
+        self.y = int(y)
+        print(self.x, self.y)
+        if self.auto_update:
+            self.update()
+
+
 if __name__ == '__main__':
     js_data = JoystickGadget('/tmp/jsdata.bin', 2,2,10)
     js_data.set_button(5, True)
