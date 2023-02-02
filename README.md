@@ -69,3 +69,6 @@ It should not be necessary to disable the gadget, you can just unplug the Steam 
 - Ethernet gadget for local multiplayer by connecting two Steam Decks to each other (Might need to disable charging on both to prevent one from draining the other)
 - MTP gadget to browse Steam Deck files from computer
 - UVC gadget for streaming game to computer without the use of an HDMI capture card
+
+## Notes
+- Spacewar? Yes, this program is treated as being the game Spacewar when launching (But you should launch it with start_ui). This is because we borrow the SteamID of Spacewar, which is done when you don't have your own SteamID.
