@@ -66,7 +66,7 @@ class JoystickData:
 class JoystickGadget:
     def __init__(self, device: str):
         self.device: BinaryIO = open(device, 'wb+')
-        self.data = JoystickData(2, 1, 8)
+        self.data = JoystickData(2, 1, 16)
 
     def close(self):
         """End Joystick_8"""

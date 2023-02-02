@@ -14,7 +14,7 @@ from joystick_gadget import JoystickGadget
 class JoystickEmulator:
     ACTION_SETS = ('InGameControls',)
     ANALOG_ACTIONS = ('JoyLeft', 'JoyRight', 'TrigLeft', 'TrigRight')
-    DIGITAL_ACTIONS = ('A', 'B', 'X', 'Y', 'BumpLeft', 'BumpRight', 'Menu', 'Start')
+    DIGITAL_ACTIONS = ('A', 'B', 'X', 'Y', 'UP', 'DOWN', 'LEFT', 'RIGHT', 'BumpLeft', 'BumpRight', 'Menu', 'Start', 'JoyPressLeft', 'JoyPressRight')
 
     def __init__(self, hid_device):
         self.gadget = JoystickGadget(hid_device)
