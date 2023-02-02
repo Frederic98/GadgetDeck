@@ -128,6 +128,14 @@ class MouseGadget(HIDGadget):
         if self.auto_update:
             self.update()
 
+    def set_button(self, i: int, v: bool):
+        if v:
+            self.buttons[i//8] |= (1 << (i%8))
+        else:
+            self.buttons[i//8] &= ~(1 << (i%8))
+        if self.auto_update:
+            self.update()
+
 
 if __name__ == '__main__':
     js_data = JoystickGadget('/tmp/jsdata.bin', 2,2,10)

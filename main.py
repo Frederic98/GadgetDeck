@@ -15,6 +15,7 @@ class JoystickEmulator:
     ACTION_SETS = ('InGameControls',)
     ANALOG_ACTIONS = ('JoyLeft', 'JoyRight', 'TrigLeft', 'TrigRight', 'Mouse')
     DIGITAL_ACTIONS = ('A', 'B', 'X', 'Y', 'UP', 'DOWN', 'LEFT', 'RIGHT', 'BumpLeft', 'BumpRight', 'Menu', 'Start', 'JoyPressLeft', 'JoyPressRight')
+    DIGITAL_MOUSE_ACTIONS = ('MouseClickLeft', 'MouseClickRight')
 
     def __init__(self, hid_js, hid_mouse):
         self.js_gadget = JoystickGadget(hid_js, 2, 2, 16)
@@ -27,6 +28,7 @@ class JoystickEmulator:
         self.action_set = self.steam.Input.GetActionSetHandle(self.ACTION_SETS[0])
         self.analog_actions = {name: self.steam.Input.GetAnalogActionHandle(name) for name in self.ANALOG_ACTIONS}
         self.digital_actions = {name: self.steam.Input.GetDigitalActionHandle(name) for name in self.DIGITAL_ACTIONS}
+        self.digital_actions.update({name: self.steam.Input.GetDigitalActionHandle(name) for name in self.DIGITAL_MOUSE_ACTIONS})
 
         data = {'controller': self.controllers,
                 'action_set': self.action_set,
@@ -53,6 +55,8 @@ class JoystickEmulator:
                     self.js_gadget.set_button(i, digital_data[btn])
                 self.js_gadget.update()
                 self.mouse_gadget.move(analog_data['Mouse'].x, analog_data['Mouse'].y)
+                self.mouse_gadget.set_button(0, digital_data['MouseClickLeft'])
+                self.mouse_gadget.set_button(1, digital_data['MouseClickRight'])
                 self.mouse_gadget.update()
             else:
                 self.controllers = self.steam.Input.GetConnectedControllers()
