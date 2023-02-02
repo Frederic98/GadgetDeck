@@ -124,7 +124,6 @@ class MouseGadget(HIDGadget):
     def move(self, x, y):
         self.x = int(x)
         self.y = int(y)
-        print(self.x, self.y)
         if self.auto_update:
             self.update()
 
