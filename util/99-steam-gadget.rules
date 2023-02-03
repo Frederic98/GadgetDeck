@@ -1,9 +1,12 @@
 // /etc/polkit-1/rules.d/99-steam-gadget.rules
 // Allow non-root user to manage SteamDeckGadget service
 polkit.addRule(function(action, subject) {
-    if (action.id == "org.freedesktop.systemd1.manage-units" &&
-        action.lookup("unit") == "steam-gadget.service" &&
-        subject.user == "deck") {
-        return polkit.Result.YES;
+    if (action.id == "org.freedesktop.systemd1.manage-units" && subject.user == "deck") {
+        if(action.lookup("unit") == "steam-gadget-base.service"){
+            return polkit.Result.YES;
+        }
+        if(RegExp('steam-gadget@[A-Za-z0-9_-]+.service').test(action.lookup("unit"))){
+            return polkit.Result.YES;
+        }
     }
 });
