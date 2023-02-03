@@ -15,6 +15,9 @@ class ConfigFS:
         os.mkdir(path)
         return ConfigFS(path)
 
+    def exists(self, item):
+        return os.path.exists(os.path.join(self.path, item))
+
     def __getitem__(self, item):
         """Get subdirectory"""
         path = os.path.join(self.path, item)

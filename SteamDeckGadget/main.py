@@ -17,10 +17,22 @@ class JoystickEmulator:
     DIGITAL_ACTIONS = ('A', 'B', 'X', 'Y', 'UP', 'DOWN', 'LEFT', 'RIGHT', 'BumpLeft', 'BumpRight', 'Menu', 'Start', 'JoyPressLeft', 'JoyPressRight')
     DIGITAL_MOUSE_ACTIONS = ('MouseClickLeft', 'MouseClickRight')
 
-    def __init__(self, hid_js, hid_mouse, hid_keyboard):
-        self.js_gadget = hid_gadget.JoystickGadget(hid_js, 2, 2, 16)
-        self.mouse_gadget = hid_gadget.MouseGadget(hid_mouse, 2, 8, 2)
-        self.keyboard_gadget = hid_gadget.KeyboardGadget(hid_keyboard, 6)
+    def __init__(self):
+        gadget = usb_gadget.USBGadget('steam_gadget')
+        self.js_gadget = self.mouse_gadget = self.keyboard_gadget = None
+        if gadget['functions'].exists('hid.joystick'):
+            print('Joystick gadget found')
+            hid_joystick = usb_gadget.HIDFunction(gadget['functions']['hid.joystick'])
+            self.js_gadget = hid_gadget.JoystickGadget(hid_joystick.device, 2, 2, 24)
+        if gadget['functions'].exists('hid.mouse'):
+            print('Mouse gadget found')
+            hid_mouse = usb_gadget.HIDFunction(gadget['functions']['hid.mouse'])
+            self.mouse_gadget = hid_gadget.MouseGadget(hid_mouse.device, 2, 8, 2)
+        if gadget['functions'].exists('hid.joystick'):
+            print('Keyboard gadget found')
+            hid_keyboard = usb_gadget.HIDFunction(gadget['functions']['hid.keyboard'])
+            self.keyboard_gadget = hid_gadget.KeyboardGadget(hid_keyboard.device, 6)
+
         self.window = joystick_ui.JoystickUI()
         self.window.keypress.connect(self.onscreen_keypress_event)
         self.steam = STEAMWORKS()
@@ -49,17 +61,20 @@ class JoystickEmulator:
                 digital_data = {action: self.steam.Input.GetDigitalActionData(controller, handle).bState for action, handle in self.digital_actions.items()}
                 data = {'analog_data': analog_data, 'digital_action': digital_data}
                 self.window.update_information(data)
-                self.js_gadget.set_joystick(0, analog_data['JoyLeft'].x, -1 * analog_data['JoyLeft'].y)
-                self.js_gadget.set_joystick(1, analog_data['JoyRight'].x, -1 * analog_data['JoyRight'].y)
-                self.js_gadget.set_trigger(0, analog_data['TrigLeft'].x)
-                self.js_gadget.set_trigger(1, analog_data['TrigRight'].x)
-                for i, btn in enumerate(self.DIGITAL_ACTIONS):
-                    self.js_gadget.set_button(i, digital_data[btn])
-                self.js_gadget.update()
-                self.mouse_gadget.move(analog_data['Mouse'].x, analog_data['Mouse'].y)
-                self.mouse_gadget.set_button(0, digital_data['MouseClickLeft'])
-                self.mouse_gadget.set_button(1, digital_data['MouseClickRight'])
-                self.mouse_gadget.update()
+
+                if self.js_gadget is not None:
+                    self.js_gadget.set_joystick(0, analog_data['JoyLeft'].x, -1 * analog_data['JoyLeft'].y)
+                    self.js_gadget.set_joystick(1, analog_data['JoyRight'].x, -1 * analog_data['JoyRight'].y)
+                    self.js_gadget.set_trigger(0, analog_data['TrigLeft'].x)
+                    self.js_gadget.set_trigger(1, analog_data['TrigRight'].x)
+                    for i, btn in enumerate(self.DIGITAL_ACTIONS):
+                        self.js_gadget.set_button(i, digital_data[btn])
+                    self.js_gadget.update()
+                if self.mouse_gadget is not None:
+                    self.mouse_gadget.move(analog_data['Mouse'].x, analog_data['Mouse'].y)
+                    self.mouse_gadget.set_button(0, digital_data['MouseClickLeft'])
+                    self.mouse_gadget.set_button(1, digital_data['MouseClickRight'])
+                    self.mouse_gadget.update()
             else:
                 self.controllers = self.steam.Input.GetConnectedControllers()
                 for controller in self.controllers:
@@ -67,11 +82,12 @@ class JoystickEmulator:
                 self.window.update_information({'controller': self.controllers})
 
     def onscreen_keypress_event(self, key):
-        self.keyboard_gadget.press_and_release(key)
+        if self.keyboard_gadget is not None:
+            self.keyboard_gadget.press_and_release(key)
 
 if __name__ == '__main__':
     app = QApplication([])
-    emulator = JoystickEmulator('/dev/hidg0', '/dev/hidg1', '/dev/hidg2')
+    emulator = JoystickEmulator()
     emulator.window.show()
     app.exec()
 
