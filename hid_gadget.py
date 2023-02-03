@@ -1,7 +1,8 @@
 #!/usr/bin/python3
+import re
 import math
 import struct
-from typing import BinaryIO
+from typing import BinaryIO, Union
 
 
 class HIDGadget:
@@ -134,6 +135,130 @@ class MouseGadget(HIDGadget):
             self.buttons[i//8] &= ~(1 << (i%8))
         if self.auto_update:
             self.update()
+
+
+class KeyboardScanCode:
+    __SYMBOLS = {'-': 0x2D, '=': 0x2E, '[': 0x2F, ']': 0x30, '\\': 0x31, ';': 0x33, '\'': 0x34, '`': 0x35, ',': 0x36, '.': 0x37, '/': 0x38}
+    NULL = 0x00
+    ERR_ROLLOVER = 0x01
+    ERR_POSTFAIL = 0x02
+    ERR_UNDEFINED = 0x03
+
+    RETURN = ENTER = 0x28
+    ESCAPE = 0x29
+    BACKSPACE = 0x2A
+    TAB = 0x2B
+    SPACEBAR = SPACE = 0x2C
+    CAPSLOCK = 0x39
+
+    PRINTSCREEN = 0x46
+    SCROLLLOCK = SCROLL_LOCK = 0x47
+    NUMLOCK = NUM_LOCK = 0x53
+    PAUSE = 0x48
+    INSERT = 0x49
+
+    HOME = 0x4A
+    PAGEUP = PAGE_UP = 0x4B
+    DELETE = DELETE_FORWARD = 0x4C
+    END = 0x4D
+    PAGEDOWN = PAGE_DOWN = 0x4E
+
+    ARROW_RIGHT = 0x4F
+    ARROW_LEFT = 0x50
+    ARROW_DOWN = 0x51
+    ARROW_UP = 0x52
+
+    EXECUTE = 0x74
+    HELP = 0x75
+    MENU = 0x76
+    SELECT = 0x77
+
+    class Modifiers:
+        CONTROL_LEFT = 0xE0
+        SHIFT_LEFT = 0xE1
+        ALT_LEFT = 0xE2
+        GUI_LEFT = 0xE3
+        CONTROL_RIGHT = 0xE4
+        SHIFT_RIGHT = 0xE5
+        ALT_RIGHT = 0xE6
+        GUI_RIGHT = 0xE7
+
+    def __class_getitem__(cls, item: str):
+        if len(item) == 1:
+            # A-Z
+            if 'a' <= item.lower() <= 'z':
+                return 0x04 + (ord(item.lower()) - ord('a'))
+            # 1-9
+            if '1' <= item <= '9':
+                return 0x1E + (ord(item) - ord('1'))
+            # 0
+            if item == '0':
+                return 0x27     # In ASCII, it's 0..9, but keyboard scancodes is 1..0
+            # SPACE
+            if item == ' ':
+                return cls.SPACEBAR
+            # Special symbols
+            if item in cls.__SYMBOLS:
+                return cls.__SYMBOLS[item]
+        # Function keys
+        if function_key := re.match(f'F(\d+)', item, re.IGNORECASE):
+            number = int(function_key.group(1))
+            if 1 <= number <= 12:
+                return 0x3A + number - 1
+            if 13 <= number <= 24:
+                return 0x68 + number - 13
+        # Modifier keys
+        if hasattr(cls.Modifiers, item):
+            return getattr(cls.Modifiers, item)
+        # If not found, try class attributes
+        return getattr(cls, item)
+
+
+class KeyboardGadget(HIDGadget):
+    def __init__(self, device, key_count=6, auto_update=False):
+        HIDGadget.__init__(self, device, auto_update)
+        self.keys = []
+        self.key_count = key_count
+        self.modifier_keys = []
+
+    def to_bytes(self) -> bytes:
+        modifiers = 0
+        for key in self.modifier_keys:
+            modifiers |= 1 << (key - KeyboardScanCode.Modifiers.CONTROL_LEFT)
+        keys = bytes(self.keys).ljust(self.key_count, b'\x00')
+        return modifiers.to_bytes(1, 'little') + b'\x00' + keys
+
+    def press(self, key: Union[str, int]):
+        if isinstance(key, str):
+            key = KeyboardScanCode[key]
+        if key is None:
+            raise ValueError('Unknown key')
+        if KeyboardScanCode.Modifiers.CONTROL_LEFT <= key <= KeyboardScanCode.Modifiers.GUI_RIGHT:
+            self.modifier_keys.append(key)
+        else:
+            self.keys.append(key)
+        if self.auto_update:
+            self.update()
+
+    def release(self, key: Union[str, int]):
+        if isinstance(key, str):
+            key = KeyboardScanCode[key]
+        if key is None:
+            raise ValueError('Unknown key')
+        if KeyboardScanCode.Modifiers.CONTROL_LEFT <= key <= KeyboardScanCode.Modifiers.GUI_RIGHT:
+            if key in self.modifier_keys:
+                self.modifier_keys.remove(key)
+        else:
+            if key in self.keys:
+                self.keys.remove(key)
+        if self.auto_update:
+            self.update()
+
+    def press_and_release(self, key: Union[str, int]):
+        self.press(key)
+        self.update()
+        self.release(key)
+        self.update()
 
 
 if __name__ == '__main__':

@@ -8,7 +8,7 @@ import time
 from PyQt5.QtWidgets import QApplication
 import joystick_ui
 from steamworks import STEAMWORKS
-from hid_gadget import JoystickGadget, MouseGadget
+from hid_gadget import JoystickGadget, MouseGadget, KeyboardGadget
 
 
 class JoystickEmulator:
@@ -17,10 +17,12 @@ class JoystickEmulator:
     DIGITAL_ACTIONS = ('A', 'B', 'X', 'Y', 'UP', 'DOWN', 'LEFT', 'RIGHT', 'BumpLeft', 'BumpRight', 'Menu', 'Start', 'JoyPressLeft', 'JoyPressRight')
     DIGITAL_MOUSE_ACTIONS = ('MouseClickLeft', 'MouseClickRight')
 
-    def __init__(self, hid_js, hid_mouse):
+    def __init__(self, hid_js, hid_mouse, hid_keyboard):
         self.js_gadget = JoystickGadget(hid_js, 2, 2, 16)
         self.mouse_gadget = MouseGadget(hid_mouse, 2, 8, 2)
+        self.keyboard_gadget = KeyboardGadget(hid_keyboard, 6)
         self.window = joystick_ui.JoystickUI()
+        self.window.keypress.connect(self.onscreen_keypress_event)
         self.steam = STEAMWORKS()
         self.steam.initialize()
         self.steam.Input.Init()
@@ -64,10 +66,12 @@ class JoystickEmulator:
                     self.steam.Input.ActivateActionSet(controller, self.action_set)
                 self.window.update_information({'controller': self.controllers})
 
+    def onscreen_keypress_event(self, key):
+        self.keyboard_gadget.press_and_release(key)
 
 if __name__ == '__main__':
     app = QApplication([])
-    emulator = JoystickEmulator('/dev/hidg0', '/dev/hidg1')
+    emulator = JoystickEmulator('/dev/hidg0', '/dev/hidg1', '/dev/hidg2')
     emulator.window.show()
     app.exec()
 

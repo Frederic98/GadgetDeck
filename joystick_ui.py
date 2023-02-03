@@ -1,6 +1,10 @@
+import json
+
 from PyQt5.QtCore import pyqtSignal, QPoint, Qt, QRect
 from PyQt5.QtGui import QPainter, QPen, QBrush
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, qApp
+
+import onscreen_keyboard
 
 
 def constrain(value, lo, hi):
@@ -9,25 +13,26 @@ def constrain(value, lo, hi):
 
 class JoystickUI(QWidget):
     _update_info_signal = pyqtSignal(object)
+    keypress = pyqtSignal(str)
 
     def __init__(self):
         QWidget.__init__(self)
         self.main_layout = QVBoxLayout()
-        self.controller_label = QLabel('Controller ID')
-        self.main_layout.addWidget(self.controller_label)
-        self.actionset_label = QLabel('Action Set ID')
-        self.main_layout.addWidget(self.actionset_label)
-        self.analog_action_label = QLabel('Analog Action')
-        self.main_layout.addWidget(self.analog_action_label)
-        self.digital_action_label = QLabel('Digital Action')
-        self.main_layout.addWidget(self.digital_action_label)
         self.js = AnalogWidget()
         self.main_layout.addWidget(self.js)
         self.exit_button = QPushButton('Exit')
         self.exit_button.clicked.connect(self.exit)
         self.main_layout.addWidget(self.exit_button)
+        with open('keyboard.json') as f:
+            keyboard_keys = json.load(f)
+        self.keyboard = onscreen_keyboard.Keyboard(keyboard_keys)
+        self.keyboard.keypress.connect(self.onscreen_keypress_event)
+        self.main_layout.addWidget(self.keyboard)
         self.setLayout(self.main_layout)
         self.setWindowState(Qt.WindowMaximized)
+        screen = QApplication.desktop().screenGeometry()
+        self.setFixedSize(screen.width(), screen.height())
+        self.keyboard.setMaximumHeight(screen.height()//2)
 
         self.data = {}
         self._update_info_signal.connect(self._update_information_listener)
@@ -37,16 +42,19 @@ class JoystickUI(QWidget):
         self._update_info_signal.emit(self.data)
 
     def _update_information_listener(self, data):
-        if 'controller' in data:
-            self.controller_label.setText(f"Controllers: {data['controller']}")
-        if 'action_set' in data:
-            self.actionset_label.setText(f"Action sets: {data['action_set']}")
-        if 'analog_action' in data:
-            self.analog_action_label.setText(f"Analog actions: {data['analog_action']}")
-        if 'digital_action' in data:
-            self.digital_action_label.setText(f"Digital actions: {data['digital_action']}")
+        # if 'controller' in data:
+        #     self.controller_label.setText(f"Controllers: {data['controller']}")
+        # if 'action_set' in data:
+        #     self.actionset_label.setText(f"Action sets: {data['action_set']}")
+        # if 'analog_action' in data:
+        #     self.analog_action_label.setText(f"Analog actions: {data['analog_action']}")
+        # if 'digital_action' in data:
+        #     self.digital_action_label.setText(f"Digital actions: {data['digital_action']}")
         if 'analog_data' in data:
             self.js.set_value(data['analog_data'])
+
+    def onscreen_keypress_event(self, key):
+        self.keypress.emit(key)
 
     def exit(self):
         self.close()

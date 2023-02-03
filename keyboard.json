@@ -1,0 +1,73 @@
+[
+  [
+    "`",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "0",
+    "-",
+    "=",
+    {"name":  "BACKSPACE", "width": 2}
+  ],
+  [
+    {"name": "TAB", "width": 1.5},
+    "Q",
+    "W",
+    "E",
+    "R",
+    "T",
+    "Y",
+    "U",
+    "I",
+    "O",
+    "P",
+    "[",
+    "]",
+    {"name": "\\", "width": 1.5}
+  ],
+  [
+    {"name":  "CAPSLOCK", "width":  1.75},
+    "A",
+    "S",
+    "D",
+    "F",
+    "G",
+    "H",
+    "J",
+    "K",
+    "L",
+    ";",
+    "'",
+    {"name": "ENTER", "width": 2.25}
+  ],
+  [
+    {"name": "SHIFT_LEFT", "width":  2.25, "label": "SHIFT"},
+    "Z",
+    "X",
+    "C",
+    "V",
+    "B",
+    "N",
+    "M",
+    ",",
+    ".",
+    "/",
+    {"name":  "SHIFT_RIGHT", "width":  2.75, "label": "SHIFT"}
+  ],
+  [
+    {"name": "CONTROL_LEFT", "width":  1.25, "label":  "CTRL"},
+    {"name": "GUI_LEFT", "width":  1.25, "label": "#"},
+    {"name": "ALT_LEFT", "width":  1.25, "label": "ALT"},
+    {"name": "SPACE", "width":  8.75, "label": ""},
+    {"name": "ALT_RIGHT", "width":  1.25, "label": "ALT"},
+    {"name": "GUI_RIGHT", "width":  1.25, "label": "#"},
+    {"name": "MENU", "width":  1.25, "label": "..."},
+    {"name": "CONTROL_RIGHT", "width":  1.25, "label": "CTRL"}
+  ]
+]
