@@ -46,6 +46,10 @@
 				"JoyPressRight"   "#Action_JoyPressRight"
 				"MouseClickLeft"  "#Action_MouseClickLeft"
 				"MouseClickRight" "#Action_MouseClickRight"
+				"BackLeftTop"     "#Action_BackLeftTop"
+				"BackLeftBottom"  "#Action_BackLeftBottom"
+				"BackRightTop"    "#Action_BackRightTop"
+				"BackRightBottom" "#Action_BackRightBottom"
 			}
 		}
 	}
@@ -76,6 +80,10 @@
 			"Action_RIGHT"	            "DPAD Right"
 			"Action_Menu"               "Button Menu"
 			"Action_Start"              "Button Start"
+            "Action_BackLeftTop"        "Back Paddle Top Left"
+            "Action_BackLeftBottom"     "Back Paddle Bottom Left"
+            "Action_BackRightTop"       "Back Paddle Top Right"
+            "Action_BackRightBottom"    "Back Paddle Bottom Right"
 		}
 	}
 }

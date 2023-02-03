@@ -14,7 +14,8 @@ import usb_gadget
 class JoystickEmulator:
     ACTION_SETS = ('InGameControls',)
     ANALOG_ACTIONS = ('JoyLeft', 'JoyRight', 'TrigLeft', 'TrigRight', 'Mouse')
-    DIGITAL_ACTIONS = ('A', 'B', 'X', 'Y', 'UP', 'DOWN', 'LEFT', 'RIGHT', 'BumpLeft', 'BumpRight', 'Menu', 'Start', 'JoyPressLeft', 'JoyPressRight')
+    DIGITAL_ACTIONS = ('A', 'B', 'X', 'Y', 'UP', 'DOWN', 'LEFT', 'RIGHT', 'BumpLeft', 'BumpRight', 'Menu', 'Start', 'JoyPressLeft', 'JoyPressRight',
+                       'BackLeftTop', 'BackLeftBottom', 'BackRightTop', 'BackRightBottom')
     DIGITAL_MOUSE_ACTIONS = ('MouseClickLeft', 'MouseClickRight')
 
     def __init__(self):
