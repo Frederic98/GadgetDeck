@@ -1,8 +1,9 @@
+import os
 import json
 
 from PyQt5.QtCore import pyqtSignal, QPoint, Qt, QRect
 from PyQt5.QtGui import QPainter, QPen, QBrush
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, qApp
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, qApp
 
 import onscreen_keyboard
 
@@ -23,7 +24,7 @@ class JoystickUI(QWidget):
         self.exit_button = QPushButton('Exit')
         self.exit_button.clicked.connect(self.exit)
         self.main_layout.addWidget(self.exit_button)
-        with open('keyboard.json') as f:
+        with open(os.path.join(os.path.dirname(__file__), 'keyboard.json')) as f:
             keyboard_keys = json.load(f)
         self.keyboard = onscreen_keyboard.Keyboard(keyboard_keys)
         self.keyboard.keypress.connect(self.onscreen_keypress_event)

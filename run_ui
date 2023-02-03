@@ -5,7 +5,7 @@ source venv/bin/activate
 # Force steam to lock input onto our app
 steam steam://forceinputappid/480
 # Run main.py
-python main.py
+python SteamDeckGadget/main.py
 # Release steam input lock
 steam steam://forceinputappid/0
 # Deactivate venv

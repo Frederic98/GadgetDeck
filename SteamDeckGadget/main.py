@@ -3,12 +3,12 @@
 # steam steam://forceinputappid/480
 
 import threading
-import time
 
 from PyQt5.QtWidgets import QApplication
 import joystick_ui
 from steamworks import STEAMWORKS
-from hid_gadget import JoystickGadget, MouseGadget, KeyboardGadget
+import hid_gadget
+import usb_gadget
 
 
 class JoystickEmulator:
@@ -18,9 +18,9 @@ class JoystickEmulator:
     DIGITAL_MOUSE_ACTIONS = ('MouseClickLeft', 'MouseClickRight')
 
     def __init__(self, hid_js, hid_mouse, hid_keyboard):
-        self.js_gadget = JoystickGadget(hid_js, 2, 2, 16)
-        self.mouse_gadget = MouseGadget(hid_mouse, 2, 8, 2)
-        self.keyboard_gadget = KeyboardGadget(hid_keyboard, 6)
+        self.js_gadget = hid_gadget.JoystickGadget(hid_js, 2, 2, 16)
+        self.mouse_gadget = hid_gadget.MouseGadget(hid_mouse, 2, 8, 2)
+        self.keyboard_gadget = hid_gadget.KeyboardGadget(hid_keyboard, 6)
         self.window = joystick_ui.JoystickUI()
         self.window.keypress.connect(self.onscreen_keypress_event)
         self.steam = STEAMWORKS()
