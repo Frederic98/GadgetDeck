@@ -168,6 +168,7 @@ class KeyboardScanCode:
     ARROW_DOWN = 0x51
     ARROW_UP = 0x52
 
+    APPLICATION = 0x65
     EXECUTE = 0x74
     HELP = 0x75
     MENU = 0x76

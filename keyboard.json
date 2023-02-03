@@ -67,7 +67,7 @@
     {"name": "SPACE", "width":  8.75, "label": ""},
     {"name": "ALT_RIGHT", "width":  1.25, "label": "ALT"},
     {"name": "GUI_RIGHT", "width":  1.25, "label": "#"},
-    {"name": "MENU", "width":  1.25, "label": "..."},
+    {"name": "APPLICATION", "width":  1.25, "label": "..."},
     {"name": "CONTROL_RIGHT", "width":  1.25, "label": "CTRL"}
   ]
 ]
