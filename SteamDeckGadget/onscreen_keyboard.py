@@ -1,6 +1,6 @@
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtCore import Qt, pyqtSignal, QRect
 from PyQt5.QtGui import QPainter, QBrush, QPen, QFont
-from PyQt5.QtWidgets import QWidget, QApplication, QHBoxLayout, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QApplication, QHBoxLayout, QVBoxLayout, QSpacerItem
 
 
 class Keyboard(QWidget):
@@ -14,10 +14,12 @@ class Keyboard(QWidget):
             widget.keypress.connect(self.onscreen_keypress_event)
             self.layout().addWidget(widget)
             self.layout().setStretch(i, 1)
-        # self.layout().setContentsMargins(0,0,0,0)
+        self.layout().setContentsMargins(0,0,0,0)
+        self.layout().setSpacing(0)
 
     def onscreen_keypress_event(self, key):
         self.keypress.emit(key)
+
 
 class KeyboardRow(QWidget):
     keypress = pyqtSignal(str)
@@ -27,13 +29,19 @@ class KeyboardRow(QWidget):
         self.setLayout(QHBoxLayout())
         for i,key in enumerate(keys):
             if isinstance(key, str):
-                key = {'name': key, 'width': 1.0}
-            btn = KeyboardKey(**key)
-            btn.keypress.connect(self.onscreen_keypress_event)
+                key = {'name': key}
+            if 'width' not in key:
+                key['width'] = 1.0
+            if key.get('type', None) == 'spacer':
+                btn = QWidget()
+            else:
+                btn = KeyboardKey(**key)
+                btn.keypress.connect(self.onscreen_keypress_event)
             self.layout().addWidget(btn)
             self.layout().setStretch(i, int(key['width']*10))
 
         self.layout().setContentsMargins(0, 0, 0, 0)
+        self.layout().setSpacing(0)
 
     def onscreen_keypress_event(self, key):
         self.keypress.emit(key)
@@ -56,11 +64,12 @@ class KeyboardKey(QWidget):
     def paintEvent(self, a0) -> None:
         painter = QPainter(self)
         painter.setBrush(QBrush(Qt.black))
-        painter.drawRect(self.rect())
+        rect = QRect(3, 3, self.width()-6, self.height()-6)
+        painter.drawRect(rect)
         painter.setPen(QPen(Qt.white))
         # print(painter.font().setPointSize(20))
         painter.setFont(self.font)
-        painter.drawText(self.rect(), Qt.AlignCenter, self.label)
+        painter.drawText(rect, Qt.AlignCenter, self.label)
 
     def resizeEvent(self, a0) -> None:
         self.font = QFont('Arial', self.height() // 2)
