@@ -28,7 +28,7 @@ class JoystickEmulator:
             print('Mouse gadget found')
             hid_mouse = usb_gadget.HIDFunction(gadget, 'mouse')
             self.mouse_gadget = usb_gadget.MouseGadget(hid_mouse.device, 2, 8, 2)
-        if gadget['functions'].exists('hid.joystick'):
+        if gadget['functions'].exists('hid.keyboard'):
             print('Keyboard gadget found')
             hid_keyboard = usb_gadget.HIDFunction(gadget, 'keyboard')
             self.keyboard_gadget = usb_gadget.KeyboardGadget(hid_keyboard.device, 6)
