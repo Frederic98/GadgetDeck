@@ -10,7 +10,8 @@ python -m venv venv
 source venv/bin/activate
 
 echo "Installing python libs"
-pip install PyQt5 hid-parser
+pip install PyQt5 usb-gadget
+pip install git+https://github.com/Frederic98/python-hid-parser.git
 wget https://github.com/Frederic98/SteamworksPy/releases/download/SteamInput/steamworks.zip
 unzip steamworks.zip -d venv/lib/python*/site-packages
 

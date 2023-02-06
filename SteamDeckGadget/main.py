@@ -7,7 +7,6 @@ import threading
 from PyQt5.QtWidgets import QApplication
 import joystick_ui
 from steamworks import STEAMWORKS
-import hid_gadget
 import usb_gadget
 
 
@@ -23,16 +22,16 @@ class JoystickEmulator:
         self.js_gadget = self.mouse_gadget = self.keyboard_gadget = None
         if gadget['functions'].exists('hid.joystick'):
             print('Joystick gadget found')
-            hid_joystick = usb_gadget.HIDFunction(gadget['functions']['hid.joystick'])
-            self.js_gadget = hid_gadget.JoystickGadget(hid_joystick.device, 2, 2, 24)
+            hid_joystick = usb_gadget.HIDFunction(gadget, 'joystick')
+            self.js_gadget = usb_gadget.JoystickGadget(hid_joystick.device, 2, 2, 24)
         if gadget['functions'].exists('hid.mouse'):
             print('Mouse gadget found')
-            hid_mouse = usb_gadget.HIDFunction(gadget['functions']['hid.mouse'])
-            self.mouse_gadget = hid_gadget.MouseGadget(hid_mouse.device, 2, 8, 2)
+            hid_mouse = usb_gadget.HIDFunction(gadget, 'mouse')
+            self.mouse_gadget = usb_gadget.MouseGadget(hid_mouse.device, 2, 8, 2)
         if gadget['functions'].exists('hid.joystick'):
             print('Keyboard gadget found')
-            hid_keyboard = usb_gadget.HIDFunction(gadget['functions']['hid.keyboard'])
-            self.keyboard_gadget = hid_gadget.KeyboardGadget(hid_keyboard.device, 6)
+            hid_keyboard = usb_gadget.HIDFunction(gadget, 'keyboard')
+            self.keyboard_gadget = usb_gadget.KeyboardGadget(hid_keyboard.device, 6)
 
         self.window = joystick_ui.JoystickUI()
         self.window.keypress.connect(self.onscreen_keypress_event)

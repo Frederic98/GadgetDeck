@@ -54,7 +54,7 @@ def create_function_hid(name: str, report, protocol=0, subclass=0):
     if isinstance(report, str):
         report = hid_descriptor.parse_descriptor(report)
     descriptor = hid_parser.ReportDescriptor(report)
-    hid = usb_gadget.HIDFunction(gadget['functions'][f'hid.{name}'])
+    hid = usb_gadget.HIDFunction(gadget, name)
     hid.protocol = str(protocol)
     hid.subclass = str(subclass)
     hid.report_length = str(descriptor.get_input_report_size().byte)
