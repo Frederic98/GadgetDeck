@@ -44,12 +44,12 @@
     "I",
     "O",
     "P",
-    "[",
-    "]",
-    {"name": "\\", "width": 1.5}
+    {"name": "[", "shift": "{"},
+    {"name": "]", "shift": "}"},
+    {"name": "\\", "width": 1.5,  "shift": "|"}
   ],
   [
-    {"name":  "CAPSLOCK", "width":  1.75},
+    {"name":  "CAPSLOCK", "width":  1.75, "label":  "CAPS"},
     "A",
     "S",
     "D",
@@ -59,8 +59,8 @@
     "J",
     "K",
     "L",
-    ";",
-    "'",
+    {"name": ";", "shift": ":"},
+    {"name": "'", "shift": "\""},
     {"name": "ENTER", "width": 2.25}
   ],
   [
@@ -72,9 +72,9 @@
     "B",
     "N",
     "M",
-    ",",
-    ".",
-    "/",
+    {"name": ",", "shift": "<"},
+    {"name": ".", "shift": ">"},
+    {"name": "/", "shift": "?"},
     {"name":  "SHIFT_RIGHT", "width":  2.75, "label": "SHIFT", "type": "SHIFT"}
   ],
   [
