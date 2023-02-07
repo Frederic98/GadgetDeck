@@ -47,14 +47,6 @@ class JoystickUI(QWidget):
         self._update_info_signal.emit(self.data)
 
     def _update_information_listener(self, data):
-        # if 'controller' in data:
-        #     self.controller_label.setText(f"Controllers: {data['controller']}")
-        # if 'action_set' in data:
-        #     self.actionset_label.setText(f"Action sets: {data['action_set']}")
-        # if 'analog_action' in data:
-        #     self.analog_action_label.setText(f"Analog actions: {data['analog_action']}")
-        # if 'digital_action' in data:
-        #     self.digital_action_label.setText(f"Digital actions: {data['digital_action']}")
         if 'analog_data' in data:
             self.js.set_value(data['analog_data'])
 
@@ -119,7 +111,6 @@ class JoystickWidget(QWidget):
 
         painter.setPen(QPen(Qt.black))
         painter.setBrush(QBrush(Qt.lightGray))
-        # painter.setBrush(QBrush(Qt.white))
         painter.drawEllipse(center, radius, radius)
 
         painter.setPen(QPen(Qt.black))
@@ -128,7 +119,6 @@ class JoystickWidget(QWidget):
         dot_x = int(self.js_position[0] * (radius - dot_radius)) + center.x()
         dot_y = int(self.js_position[1] * (radius - dot_radius)) + center.y()
         painter.drawEllipse(QPoint(dot_x, dot_y), dot_radius, dot_radius)
-        # painter.drawEllipse(0,0,99,99)
 
 
 class TriggerWidget(QWidget):

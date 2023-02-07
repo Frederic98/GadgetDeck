@@ -114,7 +114,6 @@ class KeyboardKey(QWidget):
         rect = QRect(3, 3, self.width()-6, self.height()-6)
         painter.drawRect(rect)
         painter.setPen(QPen(Qt.white))
-        # print(painter.font().setPointSize(20))
         painter.setFont(self.font)
         if self.label_shift is not None and self.key_states['shift']:
             label = self.label_shift
@@ -151,8 +150,6 @@ class ShiftKey(KeyboardKey, key='SHIFT'):
             self.keyrelease.emit(self.key)
         else:
             self.keypress.emit(self.key)
-        # self.pressed = not self.pressed
-        # self.update()
 
     def mouseReleaseEvent(self, a0) -> None:
         pass
