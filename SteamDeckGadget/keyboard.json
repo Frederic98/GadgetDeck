@@ -1,20 +1,20 @@
 [
   [
     {"name": "ESCAPE", "label": "ESC", "width": 1.5},
-    "F1",
-    "F2",
-    "F3",
-    "F4",
+    {"name": "F1", "type": "FUNCTION"},
+    {"name": "F2", "type": "FUNCTION"},
+    {"name": "F3", "type": "FUNCTION"},
+    {"name": "F4", "type": "FUNCTION"},
     {"type": "spacer", "width":  0.75},
-    "F5",
-    "F6",
-    "F7",
-    "F8",
+    {"name": "F5", "type": "FUNCTION"},
+    {"name": "F6", "type": "FUNCTION"},
+    {"name": "F7", "type": "FUNCTION"},
+    {"name": "F8", "type": "FUNCTION"},
     {"type": "spacer", "width":  0.75},
-    "F9",
-    "F10",
-    "F11",
-    "F12"
+    {"name": "F9", "type": "FUNCTION"},
+    {"name": "F10", "type": "FUNCTION"},
+    {"name": "F11", "type": "FUNCTION"},
+    {"name": "F12", "type": "FUNCTION"}
   ],
   [
     {"name": "`", "shift": "~"},

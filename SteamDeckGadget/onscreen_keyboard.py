@@ -86,14 +86,22 @@ class KeyboardKey(QWidget):
         print(f'registering keyboard key {key}')
         KeyboardKey._subclasses[key] = cls
 
-    def __init__(self, name: str, label=None, shift=None, **kwargs):
+    def __init__(self, name: str, **kwargs):
         QWidget.__init__(self)
         self.key = name
-        self.label = label if label is not None else name
-        self.label_shift = shift
+        self.kwargs = kwargs
         self.font = QFont('Arial', 15)
         self.key_states = {'capslock': False, 'shift': False, 'numlock': False, 'scrolllock': False}
         self.pressed = False
+
+    @property
+    def label(self):
+        if self.key_states['shift'] and self.kwargs.get('shift') is not None:
+            return self.kwargs['shift']
+        label = self.kwargs.get('label', self.key)
+        # Capslock and Shift work like XOR - if one of them is active, capitalize the letter
+        capitalized = self.key_states['shift'] != self.key_states['capslock']
+        return label.upper() if capitalized else label.lower()
 
     def mousePressEvent(self, a0) -> None:
         self.keypress.emit(self.key)
@@ -115,13 +123,7 @@ class KeyboardKey(QWidget):
         painter.drawRect(rect)
         painter.setPen(QPen(Qt.white))
         painter.setFont(self.font)
-        if self.label_shift is not None and self.key_states['shift']:
-            label = self.label_shift
-        else:
-            # Capslock and Shift work like XOR - if one of them is active, capitalize the letter
-            capitalized = self.key_states['shift'] != self.key_states['capslock']
-            label = self.label.upper() if capitalized else self.label.lower()
-        painter.drawText(rect, Qt.AlignCenter, label)
+        painter.drawText(rect, Qt.AlignCenter, self.label)
 
     def resizeEvent(self, a0) -> None:
         self.font = QFont('Arial', self.height() // 2)
@@ -159,6 +161,11 @@ class ShiftKey(KeyboardKey, key='SHIFT'):
             self.pressed = shift
             self.update()
 
+
+class FunctionKey(KeyboardKey, key='FUNCTION'):
+    @property
+    def label(self):
+        return self.key.upper()
 
 if __name__ == '__main__':
     import json
