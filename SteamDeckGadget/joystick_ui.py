@@ -15,6 +15,8 @@ def constrain(value, lo, hi):
 class JoystickUI(QWidget):
     _update_info_signal = pyqtSignal(object)
     keypress = pyqtSignal(str)
+    keyrelease = pyqtSignal(str)
+    keystate = pyqtSignal(object)
 
     def __init__(self):
         QWidget.__init__(self)
@@ -28,6 +30,8 @@ class JoystickUI(QWidget):
             keyboard_keys = json.load(f)
         self.keyboard = onscreen_keyboard.Keyboard(keyboard_keys)
         self.keyboard.keypress.connect(self.onscreen_keypress_event)
+        self.keyboard.keyrelease.connect(self.onscreen_keyrelease_event)
+        self.keystate.connect(self.keyboard.set_key_state)
         self.main_layout.addWidget(self.keyboard)
         self.setLayout(self.main_layout)
         self.setWindowState(Qt.WindowMaximized)
@@ -56,6 +60,12 @@ class JoystickUI(QWidget):
 
     def onscreen_keypress_event(self, key):
         self.keypress.emit(key)
+
+    def onscreen_keyrelease_event(self, key):
+        self.keyrelease.emit(key)
+
+    def onscreen_keystate_set(self, **kwargs):
+        self.keystate.emit(kwargs)
 
     def exit(self):
         self.close()

@@ -17,19 +17,19 @@
     "F12"
   ],
   [
-    "`",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "0",
-    "-",
-    "=",
+    {"name": "`", "shift": "~"},
+    {"name": "1", "shift": "!"},
+    {"name": "2", "shift": "@"},
+    {"name": "3", "shift": "#"},
+    {"name": "4", "shift": "$"},
+    {"name": "5", "shift": "%"},
+    {"name": "6", "shift": "^"},
+    {"name": "7", "shift": "&"},
+    {"name": "8", "shift": "*"},
+    {"name": "9", "shift": "("},
+    {"name": "0", "shift": ")"},
+    {"name": "-", "shift": "_"},
+    {"name": "=", "shift": "+"},
     {"name":  "BACKSPACE", "width": 2}
   ],
   [
@@ -64,7 +64,7 @@
     {"name": "ENTER", "width": 2.25}
   ],
   [
-    {"name": "SHIFT_LEFT", "width":  2.25, "label": "SHIFT"},
+    {"name": "SHIFT_LEFT", "width":  2.25, "label": "SHIFT", "type": "SHIFT"},
     "Z",
     "X",
     "C",
@@ -75,7 +75,7 @@
     ",",
     ".",
     "/",
-    {"name":  "SHIFT_RIGHT", "width":  2.75, "label": "SHIFT"}
+    {"name":  "SHIFT_RIGHT", "width":  2.75, "label": "SHIFT", "type": "SHIFT"}
   ],
   [
     {"name": "CONTROL_LEFT", "width":  1.25, "label":  "CTRL"},
