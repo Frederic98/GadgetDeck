@@ -13,6 +13,10 @@ class JoystickEmulator:
     DIGITAL_ACTIONS = ('A', 'B', 'X', 'Y', 'UP', 'DOWN', 'LEFT', 'RIGHT', 'BumpLeft', 'BumpRight', 'Menu', 'Start', 'JoyPressLeft', 'JoyPressRight',
                        'BackLeftTop', 'BackLeftBottom', 'BackRightTop', 'BackRightBottom')
     DIGITAL_MOUSE_ACTIONS = ('MouseClickLeft', 'MouseClickRight')
+    KEYBOARD_MODIFIERS = {'shift': ('SHIFT_LEFT', 'SHIFT_RIGHT'),
+                          'control': ('CONTROL_LEFT', 'CONTROL_RIGHT'),
+                          'alt': ('ALT_LEFT', 'ALT_RIGHT'),
+                          'gui': ('GUI_LEFT', 'GUI_RIGHT')}
 
     def __init__(self):
         gadget = usb_gadget.USBGadget('steam_gadget')
@@ -89,18 +93,19 @@ class JoystickEmulator:
         if self.keyboard_gadget is not None:
             self.keyboard_gadget.press(key)
             self.keyboard_gadget.update()
-            if key in ('SHIFT_LEFT', 'SHIFT_RIGHT'):
-                self.window.onscreen_keystate_set(shift=True)
+            for modifier, modkeys in self.KEYBOARD_MODIFIERS.items():
+                if key in modkeys:
+                    self.window.onscreen_keystate_set(**{modifier: True})
 
     def onscreen_keyrelease_event(self, key):
         if self.keyboard_gadget is not None:
-            if self.keyboard_gadget.is_pressed('SHIFT_LEFT') or self.keyboard_gadget.is_pressed('SHIFT_RIGHT'):
-                # SHIFT is a latching key - when pressed, it stays pressed until another key is pressed.
-                #   So, if SHIFT was pressed before, unpress it
-                self.window.onscreen_keystate_set(shift=False)
-                self.keyboard_gadget.release('SHIFT_LEFT')
-                self.keyboard_gadget.release('SHIFT_RIGHT')
-
+            for modifier, modkeys in self.KEYBOARD_MODIFIERS.items():
+                # Modifier keys when pressed, stay pressed until another key is pressed.
+                #   So, if a  modifier was pressed before, unpress it
+                if any(self.keyboard_gadget.is_pressed(modkey) for modkey in modkeys):
+                    self.window.onscreen_keystate_set(**{modifier: False})
+                    for modkey in modkeys:
+                        self.keyboard_gadget.release(modkey)
             self.keyboard_gadget.release(key)
             self.keyboard_gadget.update()
 

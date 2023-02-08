@@ -77,13 +77,13 @@
     {"name":  "SHIFT_RIGHT", "width":  2.75, "label": "SHIFT", "type": "SHIFT"}
   ],
   [
-    {"name": "CONTROL_LEFT", "width":  1.25, "label":  "CTRL"},
-    {"name": "GUI_LEFT", "width":  1.25, "label": "#"},
-    {"name": "ALT_LEFT", "width":  1.25, "label": "ALT"},
+    {"name": "CONTROL_LEFT", "width":  1.25, "label":  "CTRL", "type": "CONTROL"},
+    {"name": "GUI_LEFT", "width":  1.25, "label": "#", "type": "GUI"},
+    {"name": "ALT_LEFT", "width":  1.25, "label": "ALT", "type": "ALT"},
     {"name": "SPACE", "width":  8.75, "label": ""},
-    {"name": "ALT_RIGHT", "width":  1.25, "label": "ALT"},
-    {"name": "GUI_RIGHT", "width":  1.25, "label": "#"},
+    {"name": "ALT_RIGHT", "width":  1.25, "label": "ALT", "type": "ALT"},
+    {"name": "GUI_RIGHT", "width":  1.25, "label": "#", "type": "GUI"},
     {"name": "APPLICATION", "width":  1.25, "label": "..."},
-    {"name": "CONTROL_RIGHT", "width":  1.25, "label": "CTRL"}
+    {"name": "CONTROL_RIGHT", "width":  1.25, "label": "CTRL", "type": "CONTROL"}
   ]
 ]
