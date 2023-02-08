@@ -1,3 +1,2 @@
-PyQt5
 git+https://github.com/Frederic98/python-hid-parser.git
 usb-gadget
