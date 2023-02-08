@@ -1,5 +1,6 @@
 import select
 import threading
+import subprocess
 
 from PyQt5.QtWidgets import QApplication
 import joystick_ui
@@ -107,6 +108,10 @@ class JoystickEmulator:
 
 
 if __name__ == '__main__':
+    for gadget in ('joystick', 'mouse', 'keyboard'):
+        if subprocess.call(['systemctl', 'is-active', '--quiet', f'steam-gadget@{gadget}.service']) != 0:
+            print(f'Gadget {gadget} not active, starting...')
+            subprocess.call(['systemctl', 'start', f'steam-gadget@{gadget}.service'])
     app = QApplication([])
     emulator = JoystickEmulator()
     emulator.window.show()
