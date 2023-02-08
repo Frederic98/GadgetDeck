@@ -6,6 +6,7 @@ Description=Steam Deck Gadget base
 Type=oneshot
 RemainAfterExit=yes
 WorkingDirectory=/home/deck/SteamDeckGadget
+ExecStartPre=modprobe libcomposite
 ExecStart=/home/deck/SteamDeckGadget/steam-gadget.py setup
 ExecStop=/home/deck/SteamDeckGadget/steam-gadget.py destroy
 
