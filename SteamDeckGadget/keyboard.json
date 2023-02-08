@@ -29,10 +29,10 @@
     {"name": "0", "shift": ")"},
     {"name": "-", "shift": "_"},
     {"name": "=", "shift": "+"},
-    {"name":  "BACKSPACE", "width": 2}
+    {"name": "BACKSPACE", "width": 2, "label": "BACK"}
   ],
   [
-    {"name": "TAB", "width": 1.5},
+    {"name": "TAB", "width": 1.5, "label": "TAB"},
     "Q",
     "W",
     "E",
@@ -60,7 +60,7 @@
     "L",
     {"name": ";", "shift": ":"},
     {"name": "'", "shift": "\""},
-    {"name": "ENTER", "width": 2.25}
+    {"name": "ENTER", "width": 2.25, "label": "ENTER"}
   ],
   [
     {"name": "SHIFT_LEFT", "width":  2.25, "label": "SHIFT", "type": "SHIFT"},

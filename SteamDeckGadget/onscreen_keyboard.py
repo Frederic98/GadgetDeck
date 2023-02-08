@@ -98,7 +98,9 @@ class KeyboardKey(QWidget):
     def label(self):
         if self.key_states['shift'] and self.kwargs.get('shift') is not None:
             return self.kwargs['shift']
-        label = self.kwargs.get('label', self.key)
+        if self.kwargs.get('label') is not None:
+            return self.kwargs['label']
+        label = self.key
         # Capslock and Shift work like XOR - if one of them is active, capitalize the letter
         capitalized = self.key_states['shift'] != self.key_states['capslock']
         return label.upper() if capitalized else label.lower()
