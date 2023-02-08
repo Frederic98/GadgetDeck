@@ -19,6 +19,8 @@ class JoystickEmulator:
                           'gui': ('GUI_LEFT', 'GUI_RIGHT')}
 
     def __init__(self):
+        self.window = joystick_ui.JoystickUI()
+
         gadget = usb_gadget.USBGadget('steam_gadget')
         self.js_gadget = self.mouse_gadget = self.keyboard_gadget = None
         if gadget['functions'].exists('hid.joystick'):
@@ -35,7 +37,6 @@ class JoystickEmulator:
             self.keyboard_gadget = usb_gadget.KeyboardGadget(hid_keyboard.device, 6)
             self.keyboard_gadget.set_output_report_callback(self.keyboard_state_callback)
 
-        self.window = joystick_ui.JoystickUI()
         self.window.keypress.connect(self.onscreen_keypress_event)
         self.window.keyrelease.connect(self.onscreen_keyrelease_event)
         self.steam = STEAMWORKS()
@@ -47,11 +48,6 @@ class JoystickEmulator:
         self.digital_actions = {name: self.steam.Input.GetDigitalActionHandle(name) for name in self.DIGITAL_ACTIONS}
         self.digital_actions.update({name: self.steam.Input.GetDigitalActionHandle(name) for name in self.DIGITAL_MOUSE_ACTIONS})
 
-        data = {'controller': self.controllers,
-                'action_set': self.action_set,
-                'analog_action': self.analog_actions,
-                'digital_action': self.digital_actions}
-        self.window.update_information(data)
         self.js_thread = threading.Thread(target=self.steam_worker, daemon=True)
         self.js_thread.start()
 
