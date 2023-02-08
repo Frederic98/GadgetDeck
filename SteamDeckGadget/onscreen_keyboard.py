@@ -73,6 +73,7 @@ class KeyboardKey(QWidget):
     keypress = pyqtSignal(str)
     keyrelease = pyqtSignal(str)
 
+    key_type = ''
     _subclasses = {}
     def __new__(cls, name, *args, **kwargs):
         if cls is KeyboardKey:
@@ -84,6 +85,7 @@ class KeyboardKey(QWidget):
     def __init_subclass__(cls, key=None):
         if key is not None:
             KeyboardKey._subclasses[key] = cls
+            cls.key_type = key
 
     def __init__(self, name: str, **kwargs):
         QWidget.__init__(self)
@@ -157,33 +159,26 @@ class LatchingKey(KeyboardKey, key='LATCHING'):
     def mouseReleaseEvent(self, a0) -> None:
         pass
 
+    def set_key_state(self, **kwargs):
+        if self.key_type.lower() in kwargs:
+            self.pressed = kwargs[self.key_type.lower()]
+            self.update()
+
 
 class ShiftKey(LatchingKey, key='SHIFT'):
-    def set_key_state(self, shift=None, **kwargs):
-        if shift is not None:
-            self.pressed = shift
-            self.update()
+    ...
 
 
 class ControlKey(LatchingKey, key='CONTROL'):
-    def set_key_state(self, control=None, **kwargs):
-        if control is not None:
-            self.pressed = control
-            self.update()
+    ...
 
 
 class AltKey(LatchingKey, key='ALT'):
-    def set_key_state(self, alt=None, **kwargs):
-        if alt is not None:
-            self.pressed = alt
-            self.update()
+    ...
 
 
 class GuiKey(LatchingKey, key='GUI'):
-    def set_key_state(self, gui=None, **kwargs):
-        if gui is not None:
-            self.pressed = gui
-            self.update()
+    ...
 
 
 class FunctionKey(KeyboardKey, key='FUNCTION'):
