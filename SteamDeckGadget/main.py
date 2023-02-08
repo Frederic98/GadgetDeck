@@ -29,6 +29,7 @@ class JoystickEmulator:
             print('Keyboard gadget found')
             hid_keyboard = usb_gadget.HIDFunction(gadget, 'keyboard')
             self.keyboard_gadget = usb_gadget.KeyboardGadget(hid_keyboard.device, 6)
+            self.keyboard_gadget.set_output_report_callback(self.keyboard_state_callback)
 
         self.window = joystick_ui.JoystickUI()
         self.window.keypress.connect(self.onscreen_keypress_event)
@@ -49,8 +50,6 @@ class JoystickEmulator:
         self.window.update_information(data)
         self.js_thread = threading.Thread(target=self.steam_worker, daemon=True)
         self.js_thread.start()
-        self.keyboard_thread = threading.Thread(target=self.keyboard_worker, daemon=True)
-        self.keyboard_thread.start()
 
     def steam_worker(self):
         while True:
@@ -81,16 +80,10 @@ class JoystickEmulator:
                     self.steam.Input.ActivateActionSet(controller, self.action_set)
                 self.window.update_information({'controller': self.controllers})
 
-    def keyboard_worker(self):
-        print('Starting keyboard worker')
-        while True:
-            r,w,x = select.select([self.keyboard_gadget.device], [], [])
-            if r:
-                report = int.from_bytes(self.keyboard_gadget.device.read(1), 'little')
-                states = {name: bool(report >> i) for i,name in enumerate(['numlock', 'capslock', 'scrolllock'])}
-                self.window.onscreen_keystate_set(**states)
-                # print(self.keyboard_gadget.device.read(1))
-                self.keyboard_gadget.device.seek(0)
+    def keyboard_state_callback(self, data):
+        report = int.from_bytes(data, 'little')
+        states = {name: bool(report >> i) for i,name in enumerate(['numlock', 'capslock', 'scrolllock'])}
+        self.window.onscreen_keystate_set(**states)
 
     def onscreen_keypress_event(self, key):
         if self.keyboard_gadget is not None:
@@ -98,7 +91,7 @@ class JoystickEmulator:
             self.keyboard_gadget.update()
             if key in ('SHIFT_LEFT', 'SHIFT_RIGHT'):
                 self.window.onscreen_keystate_set(shift=True)
-    
+
     def onscreen_keyrelease_event(self, key):
         if self.keyboard_gadget is not None:
             if self.keyboard_gadget.is_pressed('SHIFT_LEFT') or self.keyboard_gadget.is_pressed('SHIFT_RIGHT'):
