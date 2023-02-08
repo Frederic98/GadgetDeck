@@ -3,10 +3,10 @@ import argparse
 import glob
 import subprocess
 import os
+from typing import Union
 
 import hid_parser
 import usb_gadget
-import hid_descriptor
 
 gadget = usb_gadget.USBGadget('steam_gadget')
 
@@ -50,15 +50,17 @@ def gadget_destroy():
     os.rmdir(gadget.path)
 
 
-def create_function_hid(name: str, report, protocol=0, subclass=0):
+def create_function_hid(name: str, report: Union[str, list[int]], protocol=0, subclass=0):
     if isinstance(report, str):
-        report = hid_descriptor.parse_descriptor(report)
-    descriptor = hid_parser.ReportDescriptor(report)
+        with open(report, 'rt') as f:
+            descriptor = hid_parser.ReportDescriptor.from_str(f.read())
+    else:
+        descriptor = hid_parser.ReportDescriptor(report)
     hid = usb_gadget.HIDFunction(gadget, name)
     hid.protocol = str(protocol)
     hid.subclass = str(subclass)
     hid.report_length = str(descriptor.get_input_report_size().byte)
-    hid.report_desc = bytes(report)
+    hid.report_desc = bytes(descriptor.data)
     gadget.link(hid, gadget['configs']['c.1'])
     return hid
 
