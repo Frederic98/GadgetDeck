@@ -12,8 +12,6 @@ gadget = usb_gadget.USBGadget('steam_gadget')
 
 
 def gadget_setup():
-    subprocess.run(['modprobe', 'libcomposite'])
-
     gadget.idVendor = '0x1d6b'
     gadget.idProduct = '0x0104'
     gadget.bcdDevice = '0x0100'
