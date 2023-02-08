@@ -5,16 +5,15 @@
     {"name": "F2", "type": "FUNCTION"},
     {"name": "F3", "type": "FUNCTION"},
     {"name": "F4", "type": "FUNCTION"},
-    {"type": "spacer", "width":  0.75},
     {"name": "F5", "type": "FUNCTION"},
     {"name": "F6", "type": "FUNCTION"},
     {"name": "F7", "type": "FUNCTION"},
     {"name": "F8", "type": "FUNCTION"},
-    {"type": "spacer", "width":  0.75},
     {"name": "F9", "type": "FUNCTION"},
     {"name": "F10", "type": "FUNCTION"},
     {"name": "F11", "type": "FUNCTION"},
-    {"name": "F12", "type": "FUNCTION"}
+    {"name": "F12", "type": "FUNCTION"},
+    {"name": "DELETE", "label": "DEL", "width": 1.5}
   ],
   [
     {"name": "`", "shift": "~"},
