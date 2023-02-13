@@ -32,6 +32,10 @@ def gadget_setup():
     return config
 
 
+def gadget_activate():
+    gadget.activate()
+
+
 def gadget_destroy():
     for config in os.scandir(gadget['configs'].path):
         config = usb_gadget.ConfigFS(config.path)
@@ -66,19 +70,42 @@ def remove_function(name):
     os.unlink(gadget['configs']['c.1'][name].path)
     os.rmdir(gadget['functions'][name].path)
 
-def function_enable(function: str):
+def function_enable(function: str, activate=True):
     gadget.deactivate()
     if function in ('joystick', 'mouse', 'keyboard'):
         function = create_function_hid(function, f'HID Descriptors/{function}.txt')
-        gadget.activate()
+        if activate:
+            gadget.activate()
         chmod_hidg()
+    if function == 'mtp':
+        function = usb_gadget.USBFunction(gadget, 'ffs.mtp')
+        gadget.link(function, gadget['configs']['c.1'])
+        os.mkdir('/dev/ffs-mtp')
+        subprocess.call(['mount', '-t', 'functionfs', 'mtp', '/dev/ffs-mtp'])
+        if activate:
+            gadget.activate()
+    if function == 'shell':
+        function = usb_gadget.USBFunction(gadget, 'acm.shell')
+        gadget.link(function, gadget['configs']['c.1'])
+        if activate:
+            gadget.activate()
+        subprocess.call(['systemctl', 'start', f'getty@ttyGS{function.port_num}.service'])
 
-def function_disable(function: str):
+
+def function_disable(function: str, activate=True):
     gadget.deactivate()
     if function in ('joystick', 'mouse', 'keyboard'):
         remove_function(f'hid.{function}')
+    if function == 'mtp':
+        subprocess.call(['umount', '/dev/ffs-mtp'])
+        os.rmdir('/dev/ffs-mtp')
+        remove_function('ffs.mtp')
+    if function == 'shell':
+        function = usb_gadget.USBFunction(gadget, 'acm.shell')
+        subprocess.call(['systemctl', 'start', f'getty@ttyGS{function.port_num}.service'])
+        remove_function('acm.shell')
     linked_functions = [f for f in os.scandir(gadget['configs']['c.1'].path) if f.is_symlink()]
-    if linked_functions:
+    if activate and linked_functions:
         gadget.activate()
         chmod_hidg()
 
@@ -86,9 +113,10 @@ def chmod_hidg():
     for dev in glob.glob('/dev/hidg*'):
         subprocess.call(['chmod', '0666', dev])
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('steam-gadget')
-    action_parser = parser.add_subparsers(title='action')
+    action_parser = parser.add_subparsers(title='action', required=True)
 
     action_setup = action_parser.add_parser('setup')
     action_setup.set_defaults(action=gadget_setup)
@@ -96,12 +124,17 @@ if __name__ == '__main__':
     action_destroy = action_parser.add_parser('destroy')
     action_destroy.set_defaults(action=gadget_destroy)
 
+    action_activate = action_parser.add_parser('activate')
+    action_activate.set_defaults(action=gadget_activate)
+
     action_enable = action_parser.add_parser('enable')
     action_enable.add_argument('function')
+    action_enable.add_argument('--no-activate', action='store_false', dest='activate')
     action_enable.set_defaults(action=function_enable)
 
     action_disable = action_parser.add_parser('disable')
     action_disable.add_argument('function')
+    action_disable.add_argument('--no-activate', action='store_false', dest='activate')
     action_disable.set_defaults(action=function_disable)
 
     args = vars(parser.parse_args())
