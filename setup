@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+if [ ! "$EUID" -eq 0 ]; then
+  echo "Run as root!"
+  exit 1
+fi
+
+wget -P GadgetDeck https://github.com/Frederic98/GadgetDeck/releases/download/V0.1/GadgetDeck.zip
+cd GadgetDeck
+unzip GadgetDeck.zip
+
+su $SUDO_USER -c make
+make install
+
+cp -r GadgetDeck /usr/share/gadget-deck/
+chmod +x /usr/share/gadget-deck/GadgetDeck/GadgetDeck
+sudo -u $SUDO_USER bash -c "steamos-add-to-steam /usr/share/gadget-deck/GadgetDeck/GadgetDeck"
+
+cd ..
+rm -r GadgetDeck
