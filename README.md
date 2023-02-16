@@ -31,7 +31,7 @@ On your computer, search `game controllers` and open `Set up USB game controller
 In Steam on your computer, go to `settings`->`Controller`->`General controller settings` and enable `Generic gamepad configuration support`.  
 Then, click the steam deck and map all the buttons to a controller layout.
 
-### 5. Disable GadgetDeck
+### 3. Disable GadgetDeck
 Not really necessary. But, to stop the USB gadgets, either reboot the Deck, or, in a terminal, type `systemctl stop gadget-deck-base`.
 
 ## Planned improvements
