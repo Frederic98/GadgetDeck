@@ -1,0 +1,16 @@
+# /etc/systemd/system/gadget-deck@.service
+[Unit]
+Description=Steam Deck Gadget function
+BindsTo=gadget-deck-base.service
+After=gadget-deck-base.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/usr/share/gadget-deck
+ExecStart=/usr/share/gadget-deck/gadget-deck-manager.py enable %i
+ExecStop=/usr/share/gadget-deck/gadget-deck-manager.py disable %i
+
+
+[Install]
+WantedBy=multi-user.target

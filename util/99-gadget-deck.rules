@@ -1,0 +1,12 @@
+// /etc/polkit-1/rules.d/99-gadget-deck.rules
+// Allow non-root user to manage GadgetDeck service
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.systemd1.manage-units" && subject.user == "deck") {
+        if(action.lookup("unit") == "gadget-deck-base.service"){
+            return polkit.Result.YES;
+        }
+        if(RegExp('gadget-deck@[A-Za-z0-9_-]+.service').test(action.lookup("unit"))){
+            return polkit.Result.YES;
+        }
+    }
+});

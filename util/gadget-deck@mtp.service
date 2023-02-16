@@ -1,0 +1,16 @@
+# /etc/systemd/system/gadget-deck@mtp.service
+[Unit]
+Description=Steam Deck Gadget MTP function
+BindsTo=gadget-deck-base.service
+After=gadget-deck-base.service
+
+[Service]
+Type=exec
+WorkingDirectory=/usr/share/gadget-deck
+ExecStartPre=/usr/share/gadget-deck/gadget-deck-manager.py enable mtp --no-activate
+ExecStart=/usr/share/gadget-deck/umtprd
+ExecStartPost=/usr/share/gadget-deck/gadget-deck-manager.py activate
+ExecStopPost=/usr/share/gadget-deck/gadget-deck-manager.py disable mtp
+
+[Install]
+WantedBy=multi-user.target

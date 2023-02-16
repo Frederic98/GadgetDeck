@@ -1,0 +1,15 @@
+# /etc/systemd/system/gadget-deck@shell.service
+[Unit]
+Description=Steam Deck Gadget MTP function
+BindsTo=gadget-deck-base.service
+After=gadget-deck-base.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/usr/share/gadget-deck
+ExecStart=/usr/share/gadget-deck/gadget-deck-manager.py enable shell
+ExecStop=/usr/share/gadget-deck/gadget-deck-manager.py disable shell
+
+[Install]
+WantedBy=multi-user.target

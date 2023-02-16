@@ -8,7 +8,7 @@ from typing import Union
 import hid_parser
 import usb_gadget
 
-gadget = usb_gadget.USBGadget('steam_gadget')
+gadget = usb_gadget.USBGadget('gadget-deck')
 
 
 def gadget_setup():

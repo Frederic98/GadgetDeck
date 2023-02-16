@@ -3,9 +3,15 @@ import threading
 import subprocess
 
 from PyQt5.QtWidgets import QApplication
-import joystick_ui
 from steamworks import STEAMWORKS
 import usb_gadget
+
+try:
+    import joystick_ui
+except ImportError:
+    import os, sys
+    sys.path.append(os.path.dirname(__file__))
+    import joystick_ui
 
 
 class JoystickEmulator:
@@ -22,7 +28,7 @@ class JoystickEmulator:
     def __init__(self):
         self.window = joystick_ui.JoystickUI()
 
-        gadget = usb_gadget.USBGadget('steam_gadget')
+        gadget = usb_gadget.USBGadget('gadget-deck')
         self.js_gadget = self.mouse_gadget = self.keyboard_gadget = None
         if gadget['functions'].exists('hid.joystick'):
             print('Joystick gadget found')
@@ -109,9 +115,9 @@ class JoystickEmulator:
 
 if __name__ == '__main__':
     for gadget in ('joystick', 'mouse', 'keyboard'):
-        if subprocess.call(['systemctl', 'is-active', '--quiet', f'steam-gadget@{gadget}.service']) != 0:
+        if subprocess.call(['systemctl', 'is-active', '--quiet', f'gadget-deck@{gadget}.service']) != 0:
             print(f'Gadget {gadget} not active, starting...')
-            subprocess.call(['systemctl', 'start', f'steam-gadget@{gadget}.service'])
+            subprocess.call(['systemctl', 'start', f'gadget-deck@{gadget}.service'])
     app = QApplication([])
     emulator = JoystickEmulator()
     emulator.window.show()

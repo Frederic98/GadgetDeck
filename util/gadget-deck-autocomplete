@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 _gadget_completer() {
-  # Firstly, check if binary is found, don't autocomplete when not in SteamDeckGadget directory
+  # Firstly, check if binary is found, don't autocomplete when not in GadgetDeck directory
   if type "${COMP_WORDS[0]}" > /dev/null 2>&1; then
     if [ "${#COMP_WORDS[@]}" == "2" ]; then
       # autocomplete the action
@@ -17,4 +17,4 @@ _gadget_completer() {
 }
 
 # Register the autocomplete function
-complete -F _gadget_completer steam-gadget.py
+complete -F _gadget_completer gadget-deck-manager.py

@@ -1,0 +1,14 @@
+# /etc/systemd/system/gadget-deck-base.service
+[Unit]
+Description=Steam Deck Gadget base
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/usr/share/gadget-deck
+ExecStartPre=modprobe libcomposite
+ExecStart=/usr/share/gadget-deck/gadget-deck-manager.py setup
+ExecStop=/usr/share/gadget-deck/gadget-deck-manager.py destroy
+
+[Install]
+WantedBy=multi-user.target

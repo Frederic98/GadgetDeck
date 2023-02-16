@@ -1,4 +1,4 @@
-# Steam Deck Gadget
+# GadgetDeck
 This is a program to emulate a game controller on the Steam Deck when connected over USB to another computer.
 
 ## How it works
@@ -16,12 +16,12 @@ On the Steam Deck, boot into the BIOS by holding the `VOLUME UP` button and pres
 Navigate to `Advanced`>`USB Configuration`>`USB Dual Role Device` and change from `XHCI` to `DRD`.
 Then `Exit`>`Exit Saving Changes`.
 
-### 2. Download SteamDeckGadget
+### 2. Download GadgetDeck
 Clone this repository into /home/deck and run the setup script
 ```shell
 cd ~/
 git clone https://github.com/Frederic98/SteamDeckGadget.git
-cd SteamDeckGadget
+cd GadgetDeck
 chmod +x setup
 ./setup
 ```
@@ -40,7 +40,7 @@ To compile the Steamworks python bindings:
 </details>
 
 ### 3. Enable USB Gadget
-In a terminal from the SteamDeckGadget directory:
+In a terminal from the GadgetDeck directory:
 ```shell
 sudo modprobe libcomposite
 sudo ./steam-gadget load
@@ -48,7 +48,7 @@ sudo ./steam-gadget load
 
 When the Steam Deck is connected to your computer over USB, it should now show up in `Control Panel` under `Devices and Printers`
 
-### 4. Run SteamDeckGadget through Steam
+### 4. Run GadgetDeck through Steam
 In Desktop Mode, add the `run_ui` file to Steam through `Games`>`Add a Non-Steam Game to My Library...`.
 Then, launch the program from the Steam Client
 
@@ -59,7 +59,7 @@ On your computer, search `game controllers` and open `Set up USB game controller
 In Steam on your computer, go to `settings`->`Controller`->`General controller settings` and enable `Generic gamepad configuration support`.  
 Then, click the steam deck and map all the buttons to a controller layout.
 
-### 5. Disable SteamDeckGadget
+### 5. Disable GadgetDeck
 It should not be necessary to disable the gadget, you can just unplug the Steam Deck from the computer. But if you want:  
 `sudo ./steam-gadget unload steam_deck_gadget`
 
