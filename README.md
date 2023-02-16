@@ -20,7 +20,7 @@ Then `Exit`>`Exit Saving Changes`.
 Clone this repository into /home/deck and run the setup script
 ```shell
 cd ~/
-git clone https://github.com/Frederic98/SteamDeckGadget.git
+git clone https://github.com/Frederic98/GadgetDeck.git
 cd GadgetDeck
 chmod +x setup
 ./setup
