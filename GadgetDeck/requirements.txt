@@ -1,2 +1,3 @@
 PyQt5
 usb-gadget
+git+https://github.com/Frederic98/SteamworksPy.git
