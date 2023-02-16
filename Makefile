@@ -8,6 +8,16 @@ build-ui:
  		--name "GadgetDeck" \
  		GadgetDeck/__main__.py
 
+RELEASE_DIR = dist/release
+release: build-ui
+	rm -r -f $(RELEASE_DIR) $(RELEASE_DIR).zip
+	mkdir -p $(RELEASE_DIR)
+	cp -r dist/GadgetDeck $(RELEASE_DIR)
+	cp -r "HID Descriptors" $(RELEASE_DIR)
+	cp -r util $(RELEASE_DIR)
+	cp `find -maxdepth 1 -type f -not \( -name '.*' -or -name '*.spec' \)` $(RELEASE_DIR)
+	cd $(RELEASE_DIR); zip -r GadgetDeck.zip *; cd -;
+
 setup:
 	mkdir -p /home/deck/.steam/steam/controller_config
 	cp util/game_actions_480.vdf /home/deck/.steam/steam/controller_config/
