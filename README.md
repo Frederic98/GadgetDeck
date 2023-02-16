@@ -16,43 +16,15 @@ On the Steam Deck, boot into the BIOS by holding the `VOLUME UP` button and pres
 Navigate to `Advanced`>`USB Configuration`>`USB Dual Role Device` and change from `XHCI` to `DRD`.
 Then `Exit`>`Exit Saving Changes`.
 
-### 2. Download GadgetDeck
-Clone this repository into /home/deck and run the setup script
+### 2. Install GadgetDeck
+In a terminal, run
 ```shell
-cd ~/
-git clone https://github.com/Frederic98/GadgetDeck.git
-cd GadgetDeck
-chmod +x setup
-./setup
+curl -s https://raw.githubusercontent.com/Frederic98/GadgetDeck/main/setup | sudo bash
 ```
+This should download and install GadgetDeck and everything it needs to work. When this is done, you should have a new item in your Steam library under `non-steam`.  
+:exclamation:It is possible that it shows up as a blank tile without a name. This should be fixed after a reboot.
 
-<details>
-  <summary>[For contributors]</summary>
-
-#### 2.1: Running from source
-To compile the Steamworks python bindings:
-- Download Steamworks SDK: https://partner.steamgames.com/dashboard
-- Clone SteamworksPy: https://github.com/philippj/SteamworksPy in `/home/deck` (Or, while it's not merged yet, Frederic98/SteamworksPy)
-- Copy Steamworks `sdk/public/steam` into SteamworksPy `library/sdk/steam`
-- Copy Steamworks `redistibutable_bin/linux64/libsteam_api.so` into SteamworksPy `library/`
-- In `SteamworksPy/library`: `make`
-- Copy `SteamworksPy.so` and `libsteam_api.so` to `SteamworksPy/steamworks`
-</details>
-
-### 3. Enable USB Gadget
-In a terminal from the GadgetDeck directory:
-```shell
-sudo modprobe libcomposite
-sudo ./steam-gadget load
-```
-
-When the Steam Deck is connected to your computer over USB, it should now show up in `Control Panel` under `Devices and Printers`
-
-### 4. Run GadgetDeck through Steam
-In Desktop Mode, add the `run_ui` file to Steam through `Games`>`Add a Non-Steam Game to My Library...`.
-Then, launch the program from the Steam Client
-
-Open the Spacewar game page in your library, and open `settings`->`manage`->`controller layout`->`edit layout` and assign all the buttons and joysticks to the corresponding game actions.
+Start GadgetDeck, and assign actions to all inputs appropriately. When this is done, connect your Deck to a PC and test if the keyboard and mouse work.
 
 On your computer, search `game controllers` and open `Set up USB game controllers`. Move the Steam Deck joysticks, and this should be reflected on your computer.
 
@@ -60,14 +32,9 @@ In Steam on your computer, go to `settings`->`Controller`->`General controller s
 Then, click the steam deck and map all the buttons to a controller layout.
 
 ### 5. Disable GadgetDeck
-It should not be necessary to disable the gadget, you can just unplug the Steam Deck from the computer. But if you want:  
-`sudo ./steam-gadget unload steam_deck_gadget`
+Not really necessary. But, to stop the USB gadgets, either reboot the Deck, or, in a terminal, type `systemctl stop gadget-deck-base`.
 
 ## Planned improvements
-- Systemd service to enable USB Gadget on boot
 - Ethernet gadget for local multiplayer by connecting two Steam Decks to each other (Might need to disable charging on both to prevent one from draining the other)
 - MTP gadget to browse Steam Deck files from computer
 - UVC gadget for streaming game to computer without the use of an HDMI capture card
-
-## Notes
-- Spacewar? Yes, this program is treated as being the game Spacewar when launching (But you should launch it with start_ui). This is because we borrow the SteamID of Spacewar, which is done when you don't have your own SteamID.
